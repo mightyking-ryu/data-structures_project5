@@ -1,6 +1,6 @@
 # HW#5: Graph Algorithms
 
-* **Due date: 11:59pm, 2024-12-19**
+* **Due date: 11:59pm, 2024-12-20**
 * TA: Sunghwan Steve Cho (steve97@snu.ac.kr)
 
 ## Goals
