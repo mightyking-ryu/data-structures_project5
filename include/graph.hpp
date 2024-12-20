@@ -7,6 +7,7 @@
 #include <tuple>
 
 /* Feel free to add more standard library headers */
+#include <optional>
 
 // A vertex is typed as `vertex_t`. An edge is typed as `edge_t`,
 // which is associated with a source vertex, a destination vertex, and
@@ -45,11 +46,80 @@ class Graph {
               const edges_t& edges,
               GraphType Type) {
             // TODO: Implement the constructor
+            this->num_vertices = num_vertices;
+            this->type = Type;
+            this->edges = edges;
         }
         // TODO(optional): Define helper functions, e.g., out_deges(v)
+
+        size_t get_num_vertices();
+        GraphType get_type();
+
+        int in_deg_num(vertex_t v);
+        int out_deg_num(vertex_t v);
+
+        std::optional<std::vector<vertex_t>> in_deges(vertex_t v);
+        std::optional<std::vector<vertex_t>> out_deges(vertex_t v);
 		
     private:
         // TODO: Roll out your own data structures
+        size_t num_vertices;
+        GraphType type;
+        edges_t edges;
 };
+
+size_t Graph::get_num_vertices() {
+    return this->num_vertices;
+}
+
+GraphType Graph::get_type() {
+    return this->type;
+}
+
+int Graph::in_deg_num(vertex_t v) {
+    int count = 0;
+    for(int i = 0; i < this->edges.size(); i++) {
+        if(v == std::get<1>(this->edges[i]))
+            count++;
+    }
+    return count;
+}
+
+int Graph::out_deg_num(vertex_t v) {
+    int count = 0;
+    for(int i = 0; i < this->edges.size(); i++) {
+        if(v == std::get<0>(this->edges[i]))
+            count++;
+    }
+    return count;
+}
+
+std::optional<std::vector<vertex_t>> Graph::in_deges(vertex_t v) {
+    std::vector<vertex_t> in_deges;
+    for(int i = 0; i < this->edges.size(); i++) {
+        if(v == std::get<1>(this->edges[i])) {
+            in_deges.push_back(std::get<0>(this->edges[i]));
+        }
+    }
+    if(in_deges.size() == 0) {
+        return std::nullopt;
+    } else {
+        return in_deges;
+    }
+}
+
+std::optional<std::vector<vertex_t>> Graph::out_deges(vertex_t v) {
+    std::vector<vertex_t> out_deges;
+    for(int i = 0; i < this->edges.size(); i++) {
+        if(v == std::get<0>(this->edges[i])) {
+            out_deges.push_back(std::get<1>(this->edges[i]));
+        }
+    }
+    if(out_deges.size() == 0) {
+        return std::nullopt;
+    } else {
+        return out_deges;
+    }
+}
 
 #endif // __GRAPH_H_
