@@ -60,6 +60,7 @@ class Graph {
 
         std::optional<std::vector<vertex_t>> in_deges(vertex_t v);
         std::optional<std::vector<vertex_t>> out_deges(vertex_t v);
+        std::optional<std::vector<std::pair<vertex_t, edge_weight_t>>> get_connected_edges(vertex_t v);
 		
     private:
         // TODO: Roll out your own data structures
@@ -120,6 +121,26 @@ std::optional<std::vector<vertex_t>> Graph::out_deges(vertex_t v) {
     } else {
         return out_deges;
     }
+}
+
+std::optional<std::vector<std::pair<vertex_t, edge_weight_t>>> Graph::get_connected_edges(vertex_t v) {
+    std::vector<std::pair<vertex_t, edge_weight_t>> connected_edges;
+    for(auto edge : this->edges) {
+        std::optional<vertex_t> neighbor;
+        if(v == std::get<0>(edge))
+            neighbor = std::get<1>(edge);
+        else if (v == std::get<1>(edge))
+            neighbor = std::get<0>(edge);
+        else
+            neighbor = std::nullopt;
+        if(neighbor && (v != neighbor.value())) {
+            connected_edges.push_back(std::make_pair(neighbor.value(), std::get<2>(edge)));
+        }
+    }
+    if(connected_edges.size() == 0)
+        return std::nullopt;
+    else
+        return connected_edges;
 }
 
 #endif // __GRAPH_H_
