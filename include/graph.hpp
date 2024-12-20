@@ -127,12 +127,13 @@ std::optional<std::vector<std::pair<vertex_t, edge_weight_t>>> Graph::get_connec
     std::vector<std::pair<vertex_t, edge_weight_t>> connected_edges;
     for(auto edge : this->edges) {
         std::optional<vertex_t> neighbor;
-        if(v == std::get<0>(edge))
+        if(v == std::get<0>(edge)) {
             neighbor = std::get<1>(edge);
-        else if (v == std::get<1>(edge))
+        }else if (v == std::get<1>(edge) && this->type == GraphType::UNDIRECTED) {
             neighbor = std::get<0>(edge);
-        else
+        }else {
             neighbor = std::nullopt;
+        }
         if(neighbor && (v != neighbor.value())) {
             connected_edges.push_back(std::make_pair(neighbor.value(), std::get<2>(edge)));
         }
